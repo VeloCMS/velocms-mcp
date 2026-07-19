@@ -1,6 +1,6 @@
 {
   "name": "@velocms/mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "MCP server for VeloCMS — draft, publish, and manage your blog (posts, media, comments, members) from Claude Code, Claude Desktop, Cursor, or any MCP client.",
   "type": "module",
   "license": "MIT",
@@ -59,5 +59,6 @@
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "mcpName": "org.velocms/mcp"
 }

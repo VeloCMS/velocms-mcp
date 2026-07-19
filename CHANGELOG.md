@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 0.1.1 — 2026-07-19
+
+- Add `mcpName` (org.velocms/mcp) for official MCP Registry verification. No functional changes.
 All notable changes to this project are documented in this file.
 
 ## [0.1.0] - 2026-07-19

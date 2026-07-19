@@ -1,0 +1,36 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "org.velocms/mcp",
+  "description": "Draft, publish, and manage your VeloCMS blog from Claude, Cursor, or any MCP client.",
+  "repository": {
+    "url": "https://github.com/VeloCMS/velocms-mcp",
+    "source": "github"
+  },
+  "version": "0.1.1",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "@velocms/mcp",
+      "version": "0.1.1",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "VELOCMS_SITE_URL",
+          "description": "Your blog's base URL, e.g. https://myblog.velocms.org or a bound custom domain",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": false
+        },
+        {
+          "name": "VELOCMS_API_KEY",
+          "description": "API key from your VeloCMS dashboard (Settings -> API Keys, Pro plan or higher)",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
