@@ -1,0 +1,63 @@
+{
+  "name": "@velocms/mcp",
+  "version": "0.1.0",
+  "description": "MCP server for VeloCMS — draft, publish, and manage your blog (posts, media, comments, members) from Claude Code, Claude Desktop, Cursor, or any MCP client.",
+  "type": "module",
+  "license": "MIT",
+  "author": {
+    "name": "VeloCMS",
+    "url": "https://velocms.org"
+  },
+  "keywords": [
+    "velocms",
+    "blog",
+    "cms",
+    "mcp",
+    "mcp-server",
+    "claude",
+    "publishing",
+    "seo"
+  ],
+  "homepage": "https://velocms.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/VeloCMS/velocms-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/VeloCMS/velocms-mcp/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "velocms-mcp": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "node dist/index.js",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
+}
