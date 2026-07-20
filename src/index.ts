@@ -29,13 +29,29 @@ function formatError(err: unknown): string {
 }
 
 async function main(): Promise<void> {
+  // Env resolution is LAZY (first tool call), not a startup gate: MCP
+  // registries (e.g. Glama) boot the server without credentials and only
+  // need it to start + answer introspection (initialize / tools/list).
+  // A missing key therefore surfaces as a helpful per-call tool error
+  // inside the MCP client instead of a dead server. Warn once on stderr
+  // so interactive users still see the misconfiguration immediately.
   const resolution = resolveEnvConfig();
-  if (!resolution.ok) {
+  let client: VeloCmsClient | null = null;
+  if (resolution.ok) {
+    client = new VeloCmsClient(resolution.config);
+  } else {
     console.error(formatMissingEnvMessage(resolution.missing));
-    process.exit(1);
   }
 
-  const client = new VeloCmsClient(resolution.config);
+  /** Returns the API client, or the missing-env error message if unconfigured. */
+  function requireClient(): VeloCmsClient | string {
+    if (client) return client;
+    const late = resolveEnvConfig();
+    if (!late.ok) return formatMissingEnvMessage(late.missing);
+    client = new VeloCmsClient(late.config);
+    return client;
+  }
+
   const server = new McpServer({ name: SERVER_NAME, version: SERVER_VERSION });
 
   for (const [name, tool] of Object.entries(tools)) {
@@ -47,8 +63,12 @@ async function main(): Promise<void> {
         inputSchema: tool.inputSchema,
       },
       async (args) => {
+        const resolved = requireClient();
+        if (typeof resolved === "string") {
+          return { content: [{ type: "text" as const, text: resolved }], isError: true };
+        }
         try {
-          const result = await tool.handler(client, (args ?? {}) as Record<string, unknown>);
+          const result = await tool.handler(resolved, (args ?? {}) as Record<string, unknown>);
           return { content: [{ type: "text" as const, text: JSON.stringify(result, null, 2) }] };
         } catch (err) {
           return { content: [{ type: "text" as const, text: formatError(err) }], isError: true };

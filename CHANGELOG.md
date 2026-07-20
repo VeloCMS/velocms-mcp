@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.2 — 2026-07-20
+
+- Env resolution is now lazy: the server always starts and answers MCP
+  introspection (initialize / tools/list) even without `VELOCMS_SITE_URL` /
+  `VELOCMS_API_KEY`; a missing variable surfaces as a readable per-tool-call
+  error instead of a startup `exit(1)`. Required by MCP registry health
+  checks (Glama) and friendlier in MCP clients generally.
+- Add `Dockerfile` (used by registry introspection checks; also works for
+  local `docker run`).
 
 ## 0.1.1 — 2026-07-19
 

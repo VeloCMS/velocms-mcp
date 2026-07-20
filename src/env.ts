@@ -1,8 +1,10 @@
 /**
  * Pure env-resolution helper — kept separate from `index.ts` (which has a
  * `#!/usr/bin/env node` shebang and starts the stdio server as a side effect
- * on import) so the fail-fast "missing env var" behavior is unit-testable
- * without spawning a subprocess or calling `process.exit`.
+ * on import) so the missing-env-var handling is unit-testable without
+ * spawning a subprocess. Since 0.1.2 a missing variable no longer exits the
+ * process at startup — the server boots for introspection and the error is
+ * returned per tool call instead.
  */
 
 export interface VeloCmsEnvConfig {
@@ -35,7 +37,7 @@ export function resolveEnvConfig(
   return { ok: true, config: { siteUrl, apiKey } };
 }
 
-/** Human-readable message for the missing-env-var fail-fast path (stderr only, never stdout). */
+/** Human-readable message for the missing-env-var path (stderr warning at boot + per-tool-call error text; never stdout). */
 export function formatMissingEnvMessage(missing: string[]): string {
   return (
     `[velocms-mcp] Missing required environment variable(s): ${missing.join(", ")}.\n` +
